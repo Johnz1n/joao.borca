@@ -1,0 +1,90 @@
+version: '3'
+
+services:
+  producer:
+    build:
+      context: ./
+      dockerfile: dockerfile.api
+    working_dir: /usr/src/app
+    container_name: producer
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/usr/src/app
+    networks:
+      - app-network
+    environment:
+      - MESSAGE_QUEUE=amqp://rabbitmq:5672
+      - PORT=8080
+      - PRIVATE_KEY=4a3ebd0ab32b3db4338c8b8e3f5ba07a0c3a59e5
+      - PUBLIC_KEY=de8f0806d5ad07826a245e45a0c872a7
+      - MONGO_USERNAME=simpaul
+      - MONGO_PASSWORD=simpaul
+      - MONGO_HOSTNAME=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DB=avengers
+    links:
+      - rabbitmq
+      - mongodb
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    
+  consumer:
+    build:
+      context: ./
+      dockerfile: dockerfile.consumer
+    working_dir: /usr/src/app
+    container_name: consumer
+    volumes:
+      - ./:/usr/src/app
+    networks:
+      - app-network
+    environment:
+      - MESSAGE_QUEUE=amqp://rabbitmq:5672
+      - MONGO_USERNAME=simpaul
+      - MONGO_PASSWORD=simpaul
+      - MONGO_HOSTNAME=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DB=avengers
+    links:
+      - rabbitmq
+      - mongodb
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    networks:
+      - app-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mongodb:
+    image: 'mongo'
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=simpaul
+      - MONGO_INITDB_ROOT_PASSWORD=simpaul
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongodb:27017/avengers --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+networks:
+  app-network:
+    driver: bridge

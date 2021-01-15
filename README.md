@@ -2,6 +2,24 @@
 
 A proposta deste teste é criar uma integração com a API da marvel.
 
+## Requisitos
+docker
+docker-compose
+nodejs
+npm
+## Como rodar o projeto
+```bash
+npm install
+make deploy
+```
+
+## Docomentação da API
+`http://localhost:8080/doc/`
+
+## Diagrama ER das entidades
+![](diagrama-ER.PNG)
+# Especificações do teste
+
 ## Como fazer seu teste
    - Para realizar o teste faça um Fork da branch master com seu nome-sobrenome, por exemplo: "Paulo.Silva". Quando terminar faça um commit desta branch.
 
