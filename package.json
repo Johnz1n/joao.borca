@@ -1,0 +1,35 @@
+{
+  "name": "joao.borca",
+  "version": "1.0.0",
+  "description": "A proposta deste teste é criar uma integração com a API da marvel.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server",
+    "swagger-autogen": "node swagger.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simpaulcorretora/joao.borca.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simpaulcorretora/joao.borca/issues"
+  },
+  "homepage": "https://github.com/simpaulcorretora/joao.borca#readme",
+  "dependencies": {
+    "amqplib": "^0.6.0",
+    "body-parser": "^1.19.0",
+    "config": "^3.2.3",
+    "crypto-js": "^4.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.12",
+    "mongose": "^0.0.2-security",
+    "request": "^2.81.0",
+    "serverless-http": "^2.6.0",
+    "swagger-autogen": "^2.3.6",
+    "swagger-ui-express": "^4.1.6"
+  }
+}
